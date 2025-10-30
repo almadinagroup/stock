@@ -211,9 +211,6 @@ else:
     filter_status = f"({f'Filtered by **{selected_category}**' if selected_category != 'All Categories' else 'All Stock'})"
 
     tab1, tab2 = st.tabs(["🏬 Warehouse Stock", "🆕 New Arrival"])
-
-    # Explicit warning that cost is hidden in the main view
-    st.warning(f"⚠️ **{COST_COLUMN.upper()}** column is hidden in the standard tab view. Use the search bar to reveal cost for specific items.")
     
     with tab1:
         st.subheader("🏬 Warehouse Stock")
