@@ -11,6 +11,8 @@ st.set_page_config(page_title="Stock & New Arrival Dashboard", layout="wide")
 # ==========================================
 # GOOGLE SHEETS CONFIGURATION
 # ==========================================
+creds_info = st.secrets["google_service_account"]
+
 SINGLE_SHEET_ID = "https://docs.google.com/spreadsheets/d/1LStM9pRCR-MFW7XMXLPxjwJwjrhyspz0AP-_LtysyhY/edit?gid=0#gid=0"  # <-- Update this
 
 GSHEETS_CONFIG = {
