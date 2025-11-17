@@ -23,15 +23,25 @@ COST_COLUMN = "cost"
 COST_COLUMN_FOUND = "internal_cost"
 
 # ------------------------
-# Load sheet function
+# Load sheet function (with proper scopes)
 # ------------------------
 @st.cache_data(ttl=600)
 def load_sheet(worksheet_name):
     try:
+        # Define scopes
+        scopes = [
+            "https://www.googleapis.com/auth/spreadsheets",
+            "https://www.googleapis.com/auth/drive"
+        ]
+
+        # Load credentials from Streamlit secrets
         creds_info = st.secrets["google_service_account"]
-        credentials = Credentials.from_service_account_info(creds_info)
+        credentials = Credentials.from_service_account_info(creds_info, scopes=scopes)
+
+        # Authorize gspread
         gc = gspread.authorize(credentials)
 
+        # Open sheet and get worksheet
         sheet = gc.open_by_key(SHEET_ID)
         ws = sheet.worksheet(worksheet_name)
         data = ws.get_all_values()
