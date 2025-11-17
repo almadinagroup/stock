@@ -12,7 +12,7 @@ st.set_page_config(page_title="Stock & New Arrival Dashboard", layout="wide")
 # GOOGLE SHEETS CONFIGURATION
 # ==========================================
 # ⚠️ 1. Set the URL for your SINGLE Google Sheet here.
-SINGLE_SHEET_URL = "https://docs.google.com/spreadsheets/d/1LStM9pRCR-MFW7XMXLPxjwJwjrhyspz0AP-_LtysyhY/edit?gid=0#gid=0"
+SINGLE_SHEET_URL = "https://docs.google.com/spreadsheets/d/1LStM9pRCR-MFW7XMXLPxjwJwjrhyspz0AP-_LtysyhY"
 
 # ⚠️ 2. Configure the specific WORKSHEET (tab) name within that sheet.
 GSHEETS_CONFIG = {
