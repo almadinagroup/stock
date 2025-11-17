@@ -4,4 +4,6 @@ pandas
 numpy
 so
 openpyxl
-
+gspread
+google-auth
+openpyxl
