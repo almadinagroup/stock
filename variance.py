@@ -30,6 +30,7 @@ URL_STOCK = "https://docs.google.com/spreadsheets/d/1LStM9pRCR-MFW7XMXLPxjwJwjrh
 URL_NEW   = "https://docs.google.com/spreadsheets/d/1LStM9pRCR-MFW7XMXLPxjwJwjrhyspz0AP-_LtysyhY/export?format=csv&gid=419749881"
 
 CATEGORY_COLUMN = "Category"
+COST_COLUMN = "Cost"
 
 # ==========================================
 # LOAD DATA (KEEP COLUMN ORDER)
@@ -78,7 +79,6 @@ if CATEGORY_COLUMN in stock_df.columns and CATEGORY_COLUMN in new_df.columns:
         filtered_stock_df = stock_df
         filtered_new_df = new_df
 else:
-    selected_category = "All Categories"
     filtered_stock_df = stock_df
     filtered_new_df = new_df
 
@@ -91,14 +91,14 @@ query = st.text_input(
 ).strip().lower()
 
 # ==========================================
-# HELPER: HIDE CATEGORY FROM TABLE
+# HELPERS
 # ==========================================
-def hide_category(df):
-    return df.drop(columns=[CATEGORY_COLUMN], errors="ignore")
+def hide_columns(df, hide_cost=True):
+    cols_to_drop = [CATEGORY_COLUMN]
+    if hide_cost:
+        cols_to_drop.append(COST_COLUMN)
+    return df.drop(columns=cols_to_drop, errors="ignore")
 
-# ==========================================
-# SEARCH LOGIC
-# ==========================================
 def search_df(df, query):
     return df[df.apply(
         lambda row: query in str(row.get("itembarcode", "")).lower()
@@ -107,7 +107,7 @@ def search_df(df, query):
     )]
 
 # ==========================================
-# SEARCH RESULTS VIEW
+# SEARCH RESULTS (COST SHOWN)
 # ==========================================
 if query:
     st.subheader(f"Search Results for: **{query}**")
@@ -117,25 +117,37 @@ if query:
 
     if not results_stock.empty:
         st.markdown("### 🏬 Warehouse Stock")
-        st.dataframe(hide_category(results_stock), use_container_width=True)
+        st.dataframe(
+            hide_columns(results_stock, hide_cost=False),
+            use_container_width=True
+        )
 
     if not results_new.empty:
         st.markdown("### 🆕 New Arrivals")
-        st.dataframe(hide_category(results_new), use_container_width=True)
+        st.dataframe(
+            hide_columns(results_new, hide_cost=False),
+            use_container_width=True
+        )
 
     if results_stock.empty and results_new.empty:
         st.warning("❌ No matching items found.")
 
 # ==========================================
-# NORMAL TAB VIEW
+# NORMAL VIEW (COST HIDDEN)
 # ==========================================
 else:
     tab1, tab2 = st.tabs(["🏬 Warehouse Stock", "🆕 New Arrival"])
 
     with tab1:
         st.subheader("🏬 Warehouse Stock")
-        st.dataframe(hide_category(filtered_stock_df), use_container_width=True)
+        st.dataframe(
+            hide_columns(filtered_stock_df, hide_cost=True),
+            use_container_width=True
+        )
 
     with tab2:
         st.subheader("🆕 New Arrival")
-        st.dataframe(hide_category(filtered_new_df), use_container_width=True)
+        st.dataframe(
+            hide_columns(filtered_new_df, hide_cost=True),
+            use_container_width=True
+        )
